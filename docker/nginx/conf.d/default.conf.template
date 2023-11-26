@@ -1,0 +1,40 @@
+server {
+  listen 80;
+
+  root /var/www/html/public/;
+  index index.php;
+
+  client_max_body_size 500m;
+
+  # static files
+  location ~*^.+\.(jpg|jpeg|gif|png|css|svg|mp4|zip|bmp|js|woff|woff2|ttf|obj|mp3|html|pdf|docx|doc|yaml|apk|json|geojson)$ {
+    expires 259200s; # 3 days
+    access_log off;
+    log_not_found off;
+    add_header Pragma public;
+    add_header 'Access-Control-Allow-Origin' "$http_origin" always;
+    add_header Cache-Control "max-age=259200, public";
+  }
+
+  location ~ ^.*\.php$ {
+    fastcgi_pass php:9000;
+    fastcgi_send_timeout 300;
+    fastcgi_read_timeout 300;
+    fastcgi_index index.php;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+    fastcgi_param REMOTE_ADDR $http_x_real_ip;
+
+    add_header 'Access-Control-Allow-Origin' "$http_origin" always;
+    add_header 'Access-Control-Max-Age' 86400;
+    add_header 'Access-Control-Allow-Credentials' 'true' always;
+    add_header 'Access-Control-Expose-Headers' 'Authorization, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset' always;
+    add_header 'Access-Control-Allow-Headers' 'Authorization, Origin, X-Requested-With, Content-Type, Accept' always;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+  }
+
+  location ~* ^(.*)$ {
+    rewrite ^(.*)$ /index.php?$args last;
+  }
+}
