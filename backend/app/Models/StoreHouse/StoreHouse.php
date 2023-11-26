@@ -38,7 +38,7 @@ class StoreHouse extends Model
     /**
      * @return string
      */
-    public function getIsAvailable(): string
+    public function isAvailable(): string
     {
         return $this->is_available;
     }

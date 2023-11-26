@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use App\Repositories\Interfaces\ProductInterface;
-use App\Repositories\Interfaces\StoryHouseInterface;
-use App\Repositories\Interfaces\StoryHouseProductInterface;
+use App\Repositories\Interfaces\StoreHouseInterface;
+use App\Repositories\Interfaces\StoreHouseProductInterface;
 use App\Repositories\ProductRepository;
-use app\Repositories\StoryHouseProductRepository;
-use app\Repositories\StoryHouseRepository;
+use app\Repositories\StoreHouseProductRepository;
+use app\Repositories\StoreHouseRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -22,12 +22,12 @@ class RepositoryServiceProvider extends ServiceProvider
             ProductRepository::class
         );
         $this->app->bind(
-            StoryHouseInterface::class,
-            StoryHouseRepository::class
+            StoreHouseInterface::class,
+            StoreHouseRepository::class
         );
         $this->app->bind(
-            StoryHouseProductInterface::class,
-            StoryHouseProductRepository::class
+            StoreHouseProductInterface::class,
+            StoreHouseProductRepository::class
         );
     }
 
