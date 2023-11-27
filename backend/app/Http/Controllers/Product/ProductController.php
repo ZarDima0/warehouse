@@ -23,7 +23,7 @@ class ProductController extends Controller
         if ($reserve) {
             return response()->json(['message' => "Товары забронированы"]);
         }
-        return response()->json(['error' => "Ошибка при бронировании товаров"]);
+        return response()->json(['error' => "Ошибка при бронировании товаров"], 400);
     }
 
     /**
@@ -39,6 +39,6 @@ class ProductController extends Controller
         if ($reserve) {
             return response()->json(['message' => "Бронирование отменено"]);
         }
-        return response()->json(['error' => "Ошибка при отменен бронирования"]);
+        return response()->json(['error' => "Ошибка при отменен бронирования"], 400);
     }
 }

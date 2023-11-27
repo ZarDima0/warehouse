@@ -9,12 +9,12 @@ class ProductRepository implements ProductInterface
 {
 
     /**
-     * @param int $uniqueCode
+     * @param int $idProduct
      * @return Product|null
      */
-    public function uniqueCodeFirst(int $uniqueCode): Product|null
+    public function productFirst(int $idProduct): Product|null
     {
-        return Product::query()->where('unique_code', '=', $uniqueCode)->first();
+        return Product::query()->where('id', '=', $idProduct)->first();
     }
 
     /**

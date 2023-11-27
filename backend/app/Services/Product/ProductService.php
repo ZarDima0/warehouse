@@ -48,8 +48,8 @@ class ProductService
                 throw new Exception('Склад недоступен');
             }
 
-            foreach ($productDTO->getProductCodes() as $code) {
-                $product = $this->productRepository->uniqueCodeFirst($code);
+            foreach ($productDTO->getProductIds() as $productId) {
+                $product = $this->productRepository->productFirst($productId);
                 if (is_null($product)) {
                     throw new Exception('Позиция не найдена');
                 }
@@ -63,6 +63,9 @@ class ProductService
                     throw new Exception('Позиция отсутствует на складе');
                 }
 
+                if ($storeHouseProduct->getReservedQuantity() == 0 && !$reserve) {
+                    throw new Exception('Нет забронированных позиций');
+                }
                 $this->storeHouseProductRepository
                     ->updateStoreHouseProduct(
                         productId: $productDTO->getStoreHouseId(),

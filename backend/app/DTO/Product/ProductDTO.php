@@ -4,7 +4,7 @@ namespace App\DTO\Product;
 
 class ProductDTO
 {
-    private array $productCodes;
+    private array $productIds;
 
     /**
      * @var int
@@ -12,10 +12,10 @@ class ProductDTO
     private int $storeHouseId;
 
     public function __construct(
-        array $productCodes,
+        array $productIds,
         int $storeHouseId
     ) {
-        $this->productCodes = $productCodes;
+        $this->productIds = $productIds;
         $this->storeHouseId = $storeHouseId;
     }
 
@@ -27,8 +27,8 @@ class ProductDTO
         return $this->storeHouseId;
     }
 
-    public function getProductCodes(): array
+    public function getProductIds(): array
     {
-        return $this->productCodes;
+        return $this->productIds;
     }
 }

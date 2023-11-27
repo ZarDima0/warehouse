@@ -9,10 +9,10 @@ interface ProductInterface
     /**
      * Получить Product по unique_code
      *
-     * @param int $uniqueCode
+     * @param int $idProduct
      * @return Product|null
      */
-    public function uniqueCodeFirst(int $uniqueCode): Product|null;
+    public function productFirst(int $idProduct): Product|null;
 
     /**
      * Метод для обновления сущности Product
