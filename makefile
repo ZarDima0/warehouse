@@ -8,3 +8,6 @@ down:
 
 stop:
 	docker-compose stop
+
+test:
+	docker exec -it warehouse-php bash -c "php artisan test"

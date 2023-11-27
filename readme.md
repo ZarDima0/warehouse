@@ -6,6 +6,12 @@
 make build 
 ````
 
+#### Для запуска тестов
+
+````
+make test
+````
+
 #### Документация openapi лежит в корне "api.json" для postman, так же сгенерирован swagger/dedoc
 
 ````
