@@ -24,8 +24,8 @@ class ReserveProductsRequest extends FormRequest
     {
         return [
             'storeHouseId' => 'required|integer',
-            'productСodes' => 'required|array',
-            'productСodes.*' => 'required|integer|distinct',
+            'productIds' => 'required|array',
+            'productIds.*' => 'required|integer|distinct',
         ];
     }
 
@@ -34,6 +34,6 @@ class ReserveProductsRequest extends FormRequest
      */
     public function getProductsCodeDTO(): ProductDTO
     {
-        return (new ProductDTO($this->input('productСodes.*'), $this->input('storeHouseId')));
+        return (new ProductDTO($this->input('productIds.*'), $this->input('storeHouseId')));
     }
 }

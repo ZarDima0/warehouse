@@ -27,7 +27,7 @@
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "productСodes": {
+                                    "productIds": {
                                         "type": "array",
                                         "items": {
                                             "type": "integer"
@@ -40,7 +40,7 @@
                                 },
                                 "required": [
                                     "storeHouseId",
-                                    "productСodes"
+                                    "productIds"
                                 ]
                             }
                         }
@@ -108,7 +108,7 @@
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "productСodes": {
+                                    "productIds": {
                                         "type": "array",
                                         "items": {
                                             "type": "integer"
@@ -121,7 +121,7 @@
                                 },
                                 "required": [
                                     "storeHouseId",
-                                    "productСodes"
+                                    "productIds"
                                 ]
                             }
                         }
