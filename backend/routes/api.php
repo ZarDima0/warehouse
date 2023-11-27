@@ -21,5 +21,5 @@ Route::prefix('product')->group(function () {
 });
 
 Route::prefix('store-house')->group(function () {
-    Route::post('/countProducts', [StoreHouseController::class, 'getCountProduct'])->name('product.reverse');
+    Route::post('/countProducts', [StoreHouseController::class, 'getCountProduct'])->name('store-house.reverse');
 });
