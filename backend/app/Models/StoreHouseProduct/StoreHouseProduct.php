@@ -2,10 +2,13 @@
 
 namespace App\Models\StoreHouseProduct;
 
+use App\Models\Product\Product;
+use App\Models\StoreHouse\StoreHouse;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -18,6 +21,8 @@ use Illuminate\Support\Carbon;
  * @property integer $reserved_quantity Количество зарезервированного товара
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read StoreHouse $storeHouse
+ * @property-read Product $product
  * @method static Builder|StoreHouseProduct newModelQuery()
  * @method static Builder|StoreHouseProduct newQuery()
  * @method static Builder|StoreHouseProduct query()
@@ -26,6 +31,22 @@ use Illuminate\Support\Carbon;
 class StoreHouseProduct extends Model
 {
     use HasFactory;
+
+    /**
+     * @return HasOne
+     */
+    public function storeHouse(): HasOne
+    {
+        return $this->hasOne(StoreHouse::class, 'id', 'storehouse_id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function product(): HasOne
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 
     /**
      * @return int
