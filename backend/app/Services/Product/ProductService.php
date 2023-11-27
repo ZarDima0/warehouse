@@ -3,6 +3,7 @@
 namespace App\Services\Product;
 
 use App\DTO\Product\ProductDTO;
+use App\Exceptions\LogicException;
 use App\Repositories\Interfaces\ProductInterface;
 use App\Repositories\Interfaces\StoreHouseInterface;
 use App\Repositories\Interfaces\StoreHouseProductInterface;
@@ -34,24 +35,28 @@ class ProductService
     /**
      * @param ProductDTO $productDTO
      * @return bool
+     * @throws Exception
      */
     public function reserve(ProductDTO $productDTO): bool
     {
         return $this->updateProductQuantity($productDTO, true);
     }
 
+    /**
+     * @throws Exception
+     */
     private function updateProductQuantity(ProductDTO $productDTO, bool $reserve): bool
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             if (!$this->storeHouseRepository->isAvailableStoreHouse($productDTO->getStoreHouseId())) {
-                throw new Exception('Склад недоступен');
+                throw new LogicException('Склад недоступен');
             }
 
             foreach ($productDTO->getProductIds() as $productId) {
                 $product = $this->productRepository->productFirst($productId);
                 if (is_null($product)) {
-                    throw new Exception('Позиция не найдена');
+                    throw new LogicException('Позиция не найдена');
                 }
                 $storeHouseProduct = $this->storeHouseProductRepository
                     ->getStoreHouseProduct($product->getId(), $productDTO->getStoreHouseId());
@@ -60,11 +65,11 @@ class ProductService
                     || $storeHouseProduct->getQuantity() == 0
                     || $product->getQuantity() == 0
                 ) {
-                    throw new Exception('Позиция отсутствует на складе');
+                    throw new LogicException('Позиция отсутствует на складе');
                 }
 
                 if ($storeHouseProduct->getReservedQuantity() == 0 && !$reserve) {
-                    throw new Exception('Нет забронированных позиций');
+                    throw new LogicException('Нет забронированных позиций');
                 }
                 $this->storeHouseProductRepository
                     ->updateStoreHouseProduct(
@@ -89,13 +94,14 @@ class ProductService
             Log::channel($reserve ? self::LOG_CHANNEL_RESERVE : self::LOG_CHANNEL_RELEASE)
                 ->error('Trace:' . $exception->getTraceAsString());
             DB::rollBack();
-            return false;
+            throw $exception;
         }
     }
 
     /**
      * @param ProductDTO $productDTO
      * @return bool
+     * @throws Exception
      */
     public function release(ProductDTO $productDTO): bool
     {

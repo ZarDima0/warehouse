@@ -16,6 +16,7 @@ class ProductController extends Controller
      * @param ReserveProductsRequest $request
      * @param ProductService $service
      * @return JsonResponse
+     * @throws \Exception
      */
     public function reserveProducts(ReserveProductsRequest $request, ProductService $service): JsonResponse
     {
@@ -32,6 +33,7 @@ class ProductController extends Controller
      * @param ReserveProductsRequest $request
      * @param ProductService $service
      * @return JsonResponse
+     * @throws \Exception
      */
     public function releaseProducts(ReserveProductsRequest $request, ProductService $service): JsonResponse
     {
@@ -39,6 +41,6 @@ class ProductController extends Controller
         if ($reserve) {
             return response()->json(['message' => "Бронирование отменено"]);
         }
-        return response()->json(['error' => "Ошибка при отменен бронирования"], 400);
+        return response()->json(['message' => "Ошибка при отменен бронирования"], 400);
     }
 }
