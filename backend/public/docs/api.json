@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost/api"
+            "url": "http://localhost:8050/api"
         }
     ],
     "paths": {
@@ -29,13 +29,13 @@
                                     },
                                     "productСodes": {
                                         "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
                                         "example": [
                                             1,
                                             2
-                                        ],
-                                        "items": {
-                                            "type": "integer"
-                                        }
+                                        ]
                                     }
                                 },
                                 "required": [
