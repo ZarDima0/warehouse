@@ -29,4 +29,15 @@ class StoreHouseProductRepository implements StoreHouseProductInterface
             ->where('product_id', '=', $productId)
             ->update($result);
     }
+
+    /**
+     * @param int $storeHouseId
+     * @return int
+     */
+    public function getCountProduct(int $storeHouseId): int
+    {
+        return StoreHouseProduct::query()
+            ->where('storehouse_id', '=', $storeHouseId)
+            ->sum('quantity');
+    }
 }

@@ -41,6 +41,4 @@ class ProductController extends Controller
         }
         return response()->json(['error' => "Ошибка при отменен бронирования"]);
     }
-
-
 }

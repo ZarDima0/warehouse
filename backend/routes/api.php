@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Product\ProductController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\StoreHouse\StoreHouseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::prefix('product')->group(function () {
-   Route::post('/reserve',  [ProductController::class, 'reserveProducts'])->name('product.reverse');
-    Route::post('/release',  [ProductController::class, 'releaseProducts'])->name('product.release');
+    Route::post('/reserve', [ProductController::class, 'reserveProducts'])->name('product.reverse');
+    Route::post('/release', [ProductController::class, 'releaseProducts'])->name('product.release');
+});
+
+Route::prefix('store-house')->group(function () {
+    Route::post('/countProducts', [StoreHouseController::class, 'getCountProduct'])->name('product.reverse');
 });

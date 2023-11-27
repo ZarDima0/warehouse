@@ -22,11 +22,10 @@ class ProductService
 
 
     public function __construct(
-        ProductInterface           $productRepository,
-        StoreHouseInterface        $storeHouseRepository,
+        ProductInterface $productRepository,
+        StoreHouseInterface $storeHouseRepository,
         StoreHouseProductInterface $storeHouseProductRepository,
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->storeHouseRepository = $storeHouseRepository;
         $this->storeHouseProductRepository = $storeHouseProductRepository;
@@ -39,15 +38,6 @@ class ProductService
     public function reserve(ProductDTO $productDTO): bool
     {
         return $this->updateProductQuantity($productDTO, true);
-    }
-
-    /**
-     * @param ProductDTO $productDTO
-     * @return bool
-     */
-    public function release(ProductDTO $productDTO): bool
-    {
-        return $this->updateProductQuantity($productDTO, false);
     }
 
     private function updateProductQuantity(ProductDTO $productDTO, bool $reserve): bool
@@ -98,5 +88,14 @@ class ProductService
             DB::rollBack();
             return false;
         }
+    }
+
+    /**
+     * @param ProductDTO $productDTO
+     * @return bool
+     */
+    public function release(ProductDTO $productDTO): bool
+    {
+        return $this->updateProductQuantity($productDTO, false);
     }
 }

@@ -13,9 +13,8 @@ class ProductDTO
 
     public function __construct(
         array $productCodes,
-        int   $storeHouseId
-    )
-    {
+        int $storeHouseId
+    ) {
         $this->productCodes = $productCodes;
         $this->storeHouseId = $storeHouseId;
     }
