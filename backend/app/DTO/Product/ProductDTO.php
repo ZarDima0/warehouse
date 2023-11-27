@@ -2,7 +2,7 @@
 
 namespace App\DTO\Product;
 
-class ReserveProductDTO
+class ProductDTO
 {
     private array $productCodes;
 

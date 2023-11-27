@@ -2,19 +2,24 @@
 
 namespace App\Services\Product;
 
-use App\DTO\Product\ReserveProductDTO;
-use App\Models\Product\Product;
+use App\DTO\Product\ProductDTO;
 use App\Repositories\Interfaces\ProductInterface;
 use App\Repositories\Interfaces\StoreHouseInterface;
 use App\Repositories\Interfaces\StoreHouseProductInterface;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
+    const LOG_CHANNEL_RESERVE = 'reserve';
+    const LOG_CHANNEL_RELEASE = 'release';
+
+
     private ProductInterface $productRepository;
     private StoreHouseInterface $storeHouseRepository;
     private StoreHouseProductInterface $storeHouseProductRepository;
+
 
     public function __construct(
         ProductInterface           $productRepository,
@@ -28,13 +33,28 @@ class ProductService
     }
 
     /**
-     * @param ReserveProductDTO $productDTO
+     * @param ProductDTO $productDTO
      * @return bool
      */
-    public function reserve(ReserveProductDTO $productDTO): bool
+    public function reserve(ProductDTO $productDTO): bool
+    {
+        return $this->updateProductQuantity($productDTO, true);
+    }
+
+    /**
+     * @param ProductDTO $productDTO
+     * @return bool
+     */
+    public function release(ProductDTO $productDTO): bool
+    {
+        return $this->updateProductQuantity($productDTO, false);
+    }
+
+    private function updateProductQuantity(ProductDTO $productDTO, bool $reserve): bool
     {
         try {
-            if ($this->storeHouseRepository->isAvailableStoreHouse($productDTO->getStoreHouseId())) {
+            DB::beginTransaction();
+            if (!$this->storeHouseRepository->isAvailableStoreHouse($productDTO->getStoreHouseId())) {
                 throw new Exception('Склад недоступен');
             }
 
@@ -58,19 +78,23 @@ class ProductService
                         productId: $productDTO->getStoreHouseId(),
                         storeHouseId: $product->getId(),
                         result: [
-                            'quantity' => $storeHouseProduct->getQuantity() - 1,
-                            'reserved_quantity' => $storeHouseProduct->getReservedQuantity() + 1,
+                            'quantity' => $storeHouseProduct->getQuantity() - ($reserve ? 1 : -1),
+                            'reserved_quantity' => $storeHouseProduct->getReservedQuantity() + ($reserve ? 1 : -1),
                         ]
                     );
 
                 $this->productRepository->updateProduct(
                     id: $product->getId(),
-                    result: ['quantity' => $product->getQuantity() - 1]
+                    result: ['quantity' => $product->getQuantity() - ($reserve ? 1 : -1)]
                 );
             }
             DB::commit();
             return true;
         } catch (Exception $exception) {
+            Log::channel($reserve ? self::LOG_CHANNEL_RESERVE : self::LOG_CHANNEL_RELEASE)
+                ->error('Message:' . $exception->getMessage());
+            Log::channel($reserve ? self::LOG_CHANNEL_RESERVE : self::LOG_CHANNEL_RELEASE)
+                ->error('Trace:' . $exception->getTraceAsString());
             DB::rollBack();
             return false;
         }

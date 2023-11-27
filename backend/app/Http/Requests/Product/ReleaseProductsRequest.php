@@ -5,7 +5,7 @@ namespace App\Http\Requests\Product;
 use App\DTO\Product\ProductDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReserveProductsRequest extends FormRequest
+class ReleaseProductsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

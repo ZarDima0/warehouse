@@ -6,8 +6,8 @@ use App\Repositories\Interfaces\ProductInterface;
 use App\Repositories\Interfaces\StoreHouseInterface;
 use App\Repositories\Interfaces\StoreHouseProductInterface;
 use App\Repositories\ProductRepository;
-use app\Repositories\StoreHouseProductRepository;
-use app\Repositories\StoreHouseRepository;
+use App\Repositories\StoreHouseProductRepository;
+use App\Repositories\StoreHouseRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

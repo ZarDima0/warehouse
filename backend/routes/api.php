@@ -18,4 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('product')->group(function () {
    Route::post('/reserve',  [ProductController::class, 'reserveProducts'])->name('product.reverse');
+    Route::post('/release',  [ProductController::class, 'releaseProducts'])->name('product.release');
 });

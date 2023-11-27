@@ -11,6 +11,8 @@ use Illuminate\Http\JsonResponse;
 class ProductController extends Controller
 {
     /**
+     * Метод резервирует товары на складе
+     *
      * @param ReserveProductsRequest $request
      * @param ProductService $service
      * @return JsonResponse
@@ -23,4 +25,22 @@ class ProductController extends Controller
         }
         return response()->json(['error' => "Ошибка при бронировании товаров"]);
     }
+
+    /**
+     * Метод освобождает из резерва товары
+     *
+     * @param ReserveProductsRequest $request
+     * @param ProductService $service
+     * @return JsonResponse
+     */
+    public function releaseProducts(ReserveProductsRequest $request, ProductService $service): JsonResponse
+    {
+        $reserve = $service->release($request->getProductsCodeDTO());
+        if ($reserve) {
+            return response()->json(['message' => "Бронирование отменено"]);
+        }
+        return response()->json(['error' => "Ошибка при отменен бронирования"]);
+    }
+
+
 }
