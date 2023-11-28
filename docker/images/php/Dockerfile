@@ -52,10 +52,6 @@ RUN crontab /etc/cron.d/hello-cron
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
 
-# Add script
-ADD script.sh /usr/local/bin/script.sh
-RUN chmod 0755 /usr/local/bin/script.sh
-
 WORKDIR /var/www/html
 
 RUN echo "memory_limit = 3G" >> /usr/local/etc/php/conf.d/settings.ini
@@ -76,5 +72,3 @@ RUN echo "nginx soft nofile 200000" >> /etc/security/limits.conf
 RUN echo "nginx hard nofile 200000" >> /etc/security/limits.conf
 
 RUN echo "fs.file-max = 200000" >> /etc/sysctl.conf
-
-CMD /bin/sh -c "/usr/local/bin/script.sh"

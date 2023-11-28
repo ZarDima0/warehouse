@@ -17,7 +17,7 @@ class ProductTest extends TestCase
         $response = $this->post(
             route('product.reverse', [
                 "storeHouseId" => $activeStoreHouse->id,
-                "productIds" => [1, 2]
+                "productIds" => [1, 4]
             ])
         );
 
@@ -31,7 +31,7 @@ class ProductTest extends TestCase
         $response = $this->post(
             route('product.release', [
                 "storeHouseId" => $activeStoreHouse->id,
-                "productIds" => [1, 2]
+                "productIds" => [1, 4]
             ])
         );
 
