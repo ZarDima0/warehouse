@@ -12,7 +12,7 @@
     "paths": {
         "/product/reserve": {
             "post": {
-                "operationId": "product.reserveProducts",
+                "operationId": "product.reverse",
                 "summary": "Метод резервирует товары на складе",
                 "tags": [
                     "Product"
@@ -34,7 +34,8 @@
                                         },
                                         "example": [
                                             1,
-                                            2
+                                            2,
+                                            3
                                         ]
                                     }
                                 },
@@ -52,31 +53,34 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "anyOf": [
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "error": {
-                                                    "type": "string",
-                                                    "example": "Ошибка при бронировании товаров"
-                                                }
-                                            },
-                                            "required": [
-                                                "error"
-                                            ]
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "message": {
-                                                    "type": "string",
-                                                    "example": "Товары забронированы"
-                                                }
-                                            },
-                                            "required": [
-                                                "message"
-                                            ]
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Товары забронированы"
                                         }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Ошибка при бронировании товаров"
+                                        }
+                                    },
+                                    "required": [
+                                        "error"
                                     ]
                                 }
                             }
@@ -115,7 +119,8 @@
                                         },
                                         "example": [
                                             1,
-                                            2
+                                            2,
+                                            3
                                         ]
                                     }
                                 },
@@ -133,31 +138,34 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "anyOf": [
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "error": {
-                                                    "type": "string",
-                                                    "example": "Ошибка при отменен бронирования"
-                                                }
-                                            },
-                                            "required": [
-                                                "error"
-                                            ]
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "message": {
-                                                    "type": "string",
-                                                    "example": "Бронирование отменено"
-                                                }
-                                            },
-                                            "required": [
-                                                "message"
-                                            ]
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Бронирование отменено"
                                         }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка при отменен бронирования"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
                                     ]
                                 }
                             }
@@ -174,7 +182,7 @@
         },
         "/store-house/countProducts": {
             "post": {
-                "operationId": "storeHouse.getCountProduct",
+                "operationId": "store-house.count-product",
                 "summary": "Метод возвращает количество продуктов на складе",
                 "tags": [
                     "StoreHouse"
