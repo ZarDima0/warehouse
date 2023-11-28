@@ -7,7 +7,7 @@ use App\Models\Product\Product;
 interface ProductInterface
 {
     /**
-     * Получить Product по unique_code
+     * Получить Product по id
      *
      * @param int $idProduct
      * @return Product|null
