@@ -16,3 +16,4 @@ chmod 0755 -R /var/www/html/storage/logs;
 chown www-data:www-data -R /var/www/html/storage/framework;
 
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf;
+

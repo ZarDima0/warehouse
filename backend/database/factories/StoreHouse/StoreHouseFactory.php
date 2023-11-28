@@ -13,7 +13,7 @@ class StoreHouseFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'is_available' => $this->faker->boolean,
+            'is_available' => 1,
         ];
     }
 }
