@@ -4,6 +4,7 @@ namespace App\Services\Product;
 
 use App\DTO\Product\ProductDTO;
 use App\Exceptions\LogicException;
+use App\Models\StoreHouseProduct\StoreHouseProduct;
 use App\Repositories\Interfaces\ProductInterface;
 use App\Repositories\Interfaces\StoreHouseInterface;
 use App\Repositories\Interfaces\StoreHouseProductInterface;
@@ -71,20 +72,26 @@ class ProductService
                 if ($storeHouseProduct->getReservedQuantity() == 0 && !$reserve) {
                     throw new LogicException('Нет забронированных позиций');
                 }
-                $this->storeHouseProductRepository
+                $updateStoreProduct = $this->storeHouseProductRepository
                     ->updateStoreHouseProduct(
-                        productId: $productDTO->getStoreHouseId(),
-                        storeHouseId: $product->getId(),
+                        productId: $product->getId(),
+                        storeHouseId: $productDTO->getStoreHouseId(),
                         result: [
-                            'quantity' => $storeHouseProduct->getQuantity() - ($reserve ? 1 : -1),
-                            'reserved_quantity' => $storeHouseProduct->getReservedQuantity() + ($reserve ? 1 : -1),
+                            'quantity' => $reserve ? $storeHouseProduct->getQuantity(
+                                ) - 1 : $storeHouseProduct->getQuantity() + 1,
+                            'reserved_quantity' => $reserve ? $storeHouseProduct->getReservedQuantity(
+                                ) + 1 : $storeHouseProduct->getReservedQuantity() - 1
                         ]
                     );
 
-                $this->productRepository->updateProduct(
+                $product = $this->productRepository->updateProduct(
                     id: $product->getId(),
-                    result: ['quantity' => $product->getQuantity() - ($reserve ? 1 : -1)]
+                    result: ['quantity' => $reserve ? $product->getQuantity() - 1 : $product->getQuantity() + 1]
                 );
+
+                if (!$product || !$updateStoreProduct) {
+                    throw new LogicException('Ошибка при обновлении');
+                }
             }
             DB::commit();
             return true;
@@ -106,5 +113,19 @@ class ProductService
     public function release(ProductDTO $productDTO): bool
     {
         return $this->updateProductQuantity($productDTO, false);
+    }
+
+    private function buildResult(StoreHouseProduct $storeHouseProduct, bool $reserve): array
+    {
+        if ($reserve) {
+            return [
+                'quantity' => $storeHouseProduct->getQuantity() - 1,
+                'reserved_quantity' => $storeHouseProduct->getReservedQuantity() + 1
+            ];
+        }
+        return [
+            'quantity' => $storeHouseProduct->getQuantity() + 1,
+            'reserved_quantity' => $storeHouseProduct->getReservedQuantity() - 1
+        ];
     }
 }
