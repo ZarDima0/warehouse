@@ -2,6 +2,7 @@
 
 namespace App\Services\Storehouse;
 
+use App\Exceptions\LogicException;
 use App\Repositories\Interfaces\StoreHouseInterface;
 use App\Repositories\Interfaces\StoreHouseProductInterface;
 use Exception;
@@ -26,11 +27,11 @@ class StoreHouseService
     public function countProducts(int $StoreHouseId): int
     {
         if (!$this->storeHouseRepository->isAvailableStoreHouse($StoreHouseId)) {
-            throw new Exception('Склад недоступен');
+            throw new LogicException('Склад недоступен');
         };
         $count = $this->storeHouseProductRepository->getCountProduct($StoreHouseId);
         if ($count == 0) {
-            throw new Exception('Товаров на складе нет');
+            throw new LogicException('Товаров на складе нет');
         }
         return $count;
     }

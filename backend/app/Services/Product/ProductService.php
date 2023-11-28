@@ -114,18 +114,4 @@ class ProductService
     {
         return $this->updateProductQuantity($productDTO, false);
     }
-
-    private function buildResult(StoreHouseProduct $storeHouseProduct, bool $reserve): array
-    {
-        if ($reserve) {
-            return [
-                'quantity' => $storeHouseProduct->getQuantity() - 1,
-                'reserved_quantity' => $storeHouseProduct->getReservedQuantity() + 1
-            ];
-        }
-        return [
-            'quantity' => $storeHouseProduct->getQuantity() + 1,
-            'reserved_quantity' => $storeHouseProduct->getReservedQuantity() - 1
-        ];
-    }
 }
